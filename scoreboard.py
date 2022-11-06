@@ -5,7 +5,7 @@ class Scoreboard(Turtle):
     def __init__(self, x, y):
         self.title = "Score: "
         self.score = 0
-        # itt kéne olvasni a filéből
+        # reading from file
         # self.high_score = 0
         with open('hi-score.txt') as file:
             self.high_score = int(file.read())
@@ -29,9 +29,9 @@ class Scoreboard(Turtle):
 
     def game_over(self):
         if self.score > self.high_score:
-            # erre továbbra is szükség van, mert az új high score csak a reinitnél olvasódik majd ki
+            # still needed because the new hi-score will only be read at re-init
             self.high_score = self.score
-            # itt kéne írni a filébe
+            # this is where we'll need to write to the file
             with open('hi-score.txt', mode="w") as data:
                 data.write(f"{self.score}")
         self.score = 0

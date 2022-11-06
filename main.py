@@ -3,6 +3,7 @@ from food import Food
 from scoreboard import Scoreboard
 from turtle import Screen
 import time
+import random
 
 
 screen = Screen()
@@ -15,6 +16,8 @@ screen.tracer(0)
 
 game = True
 snek = Snake()
+# this starts out as regular food, and then should either change to fancy food or not
+# every time a bit of food is eaten
 fud = Food()
 scoreboard = Scoreboard(-20, (screen.window_height()//2) - 20)
 score = scoreboard.score
@@ -29,6 +32,7 @@ while game:
     screen.update()
     time.sleep(0.1)
     snek.move()
+    # this bit will need to be rewritten if the new default is that collision with the walls kill
     if abs(snek.report()[0]) >= screen.window_width()//2:
         if snek.report()[0] < -(screen.window_width()//2):
             snek.head.goto((screen.window_width()//2), snek.head.ycor())
