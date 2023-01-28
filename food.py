@@ -12,12 +12,14 @@ class Food(Turtle):
         self.speed("fastest")
 
     def generate(self):
-        self.color(random.choice(["blue", "red"]))
-        if str(self.color() [0])== "red":
-            self.shape("arrow")
-        else:
-            self.shape("circle")
-        print(str(self.color()))
+        switch = {
+            1: {"color": "red", "shape": "arrow"},
+            2: {"color": "blue", "shape": "circle"},
+            3: {"color": "green", "shape": "square"}
+        }
+        new_choice = random.choice([1, 2, 3])
+        self.color(switch.get(new_choice)["color"])
+        self.shape(switch.get(new_choice)["shape"])
         random_x = random.randrange(-280, 280, 20)
         random_y = random.randrange(-280, 280, 20)
         self.goto(random_x, random_y)
