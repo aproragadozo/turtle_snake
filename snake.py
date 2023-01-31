@@ -35,11 +35,13 @@ class Snake:
 
 # different kinds of food shouldn't just look different, but also trigger events
     def handle_fud(self, fud):
-        global MOVE_DISTANCE
-        if fud.shape() == "arrow":
-            # this is still an experiment;
-            # it doesn't quite work but perhaps sheds some light on what needs to be done
-            MOVE_DISTANCE += 10
+        # this doesn't seem to have any effect
+        # I think manipulating MOVE_DISTANCE might be the way forward
+        for bit in self.segments:
+            if fud.shape() == "arrow":
+                bit.speed("fastest")
+            else:
+                bit.speed("slowest")
 
 
     def report(self):
@@ -47,12 +49,6 @@ class Snake:
 
     def move(self):
         for idx in range(len(self.segments) - 1, 0, -1):
-            # for idx, bit in enumerate(segments):
-            # if idx == 0:
-            # bit.left(90)
-            # bit.forward(20)
-            # else:
-            # bit.goto(segments[idx-1].xcor(), segments[idx-1].ycor())
             self.segments[idx].goto(self.segments[idx - 1].xcor(), self.segments[idx - 1].ycor())
         self.segments[0].forward(MOVE_DISTANCE)
 
