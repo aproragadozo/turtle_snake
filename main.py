@@ -46,6 +46,7 @@ while game:
 
     # detect collision with food
     if snek.head.distance(fud) < 15:
+        snek.handle_fud(fud)
         snek.grow()
         fud.generate()
         scoreboard.increment()

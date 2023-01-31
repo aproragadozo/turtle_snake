@@ -1,4 +1,5 @@
 from turtle import Turtle
+import inspect
 
 STARTING_POSITIONS = [(0, 0), (-20, 0), (-40, 0)]
 MOVE_DISTANCE = 20
@@ -25,21 +26,21 @@ class Snake:
 
     def restart(self):
         # trim snake to first three segments
-        # this is supposed to hide the segments over 3
-        # what it does is something else completely
-        # for bit in self.segments[3:]:
-        #     bit.hideturtle()
-        # perhaps a completely new snake then?
-        # resetting the screen, and re-drawing the whole thing?
-        # self.reset()
-        # ez azért nem jó, mert maga a snek nem turtle, csak az egyes darabjai
-        # egyenként adarabjaira ha meghívjuk a resetet?
         for bit in self.segments:
             bit.reset()
         self.__init__()
 
     def grow(self):
         self.add_segment(self.segments[-1].position())
+
+# different kinds of food shouldn't just look different, but also trigger events
+    def handle_fud(self, fud):
+        global MOVE_DISTANCE
+        if fud.shape() == "arrow":
+            # this is still an experiment;
+            # it doesn't quite work but perhaps sheds some light on what needs to be done
+            MOVE_DISTANCE += 10
+
 
     def report(self):
         return self.segments[0].position()
@@ -82,45 +83,3 @@ class Snake:
             self.segments[0].right(90)
         elif int(self.segments[0].heading()) == 180:
             self.segments[0].left(90)
-
-# def left():
-#     screen.tracer(0)
-#     for bit in segments:
-#         bit.setx(bit.xcor() - 20)
-#     screen.update()
-#
-#
-# def right():
-#     screen.tracer(0)
-#     for bit in segments:
-#         bit.setx(bit.xcor() + 20)
-#     screen.update()
-#
-#
-# def up():
-#     screen.tracer(0)
-#     for idx in range(len(segments)-1, 0, -1):
-#     # for idx, bit in enumerate(segments):
-#         #if idx == 0:
-#             #bit.left(90)
-#             #bit.forward(20)
-#         #else:
-#             #bit.goto(segments[idx-1].xcor(), segments[idx-1].ycor())
-#         segments[idx].goto(segments[idx - 1].xcor(), segments[idx - 1].ycor())
-#     segments[0].left(90)
-#     segments[0].forward(20)
-#     screen.update()
-#
-#
-# def down():
-#     screen.tracer(0)
-#     for bit in segments:
-#         bit.sety(bit.ycor() - 20)
-#     screen.update()
-#
-#
-# screen.onkeypress(key="Left", fun=left)
-# screen.onkeypress(key="Right", fun=right)
-# screen.onkeypress(key="Up", fun=up)
-# screen.onkeypress(key="Down", fun=down)
-# screen.exitonclick()
