@@ -1,8 +1,8 @@
 from turtle import Turtle
 import inspect
 
-STARTING_POSITIONS = [(0, 0), (-20, 0), (-40, 0)]
-MOVE_DISTANCE = 20
+STARTING_POSITIONS = [(0, 0), (-10, 0), (-20, 0)]
+MOVE_DISTANCE = 10
 
 
 class Snake:
@@ -21,6 +21,8 @@ class Snake:
         new.color("white")
         new.setx(position[0])
         new.sety(position[1])
+        # trying to define speed here already, perhaps that helps
+        new.speed("slowest")
         self.segments.append(new)
         self.head = self.segments[0]
 
@@ -35,13 +37,11 @@ class Snake:
 
 # different kinds of food shouldn't just look different, but also trigger events
     def handle_fud(self, fud):
-        # this doesn't seem to have any effect
         # I think manipulating MOVE_DISTANCE might be the way forward
-        for bit in self.segments:
-            if fud.shape() == "arrow":
-                bit.speed("fastest")
-            else:
-                bit.speed("slowest")
+        global MOVE_DISTANCE
+        if fud.shape() == "arrow":
+            # if this is higher than 20, the snake develops gaps
+            MOVE_DISTANCE = 20
 
 
     def report(self):
