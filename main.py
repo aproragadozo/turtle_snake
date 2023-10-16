@@ -5,7 +5,6 @@ from turtle import Screen
 import time
 import random
 
-
 screen = Screen()
 screen.setup(width=600, height=600)
 screen.bgcolor("black")
@@ -30,7 +29,7 @@ screen.onkey(key="Down", fun=snek.down)
 
 while game:
     screen.update()
-    time.sleep(0.1)
+    time.sleep(snek.delay)
     snek.move()
     # this bit will need to be rewritten if the new default is that collision with the walls kill
     if abs(snek.report()[0]) >= screen.window_width()//2:
@@ -48,8 +47,15 @@ while game:
     if snek.head.distance(fud) < 15:
         snek.handle_fud(fud)
         snek.grow()
-        fud.generate()
+        # if the last food type eaten was a circle
+        # generate an additional food for each segment in the snake
+        if snek.multi:
+            for i in range(5):
+                fud.generate()
+        else:
+            fud.generate()
         scoreboard.increment()
+        print(snek.multi)
 
     # detect collision with tail
     for bit in snek.segments[1:]:
@@ -57,4 +63,6 @@ while game:
             #game = False
             scoreboard.game_over()
             snek.restart()
-screen.exitonclick()
+    
+screen.mainloop()
+# screen.exitonclick()

@@ -1,8 +1,9 @@
-from turtle import Turtle
+from turtle import Turtle, ontimer
 import inspect
 
+
 STARTING_POSITIONS = [(0, 0), (-10, 0), (-20, 0)]
-MOVE_DISTANCE = 10
+MOVE_DISTANCE = 20
 
 
 class Snake:
@@ -10,6 +11,12 @@ class Snake:
         self.segments = []
         self.head = None
         self.create_snake()
+        # define the delay for the game loop here
+        # since this is where it will be manipulated
+        # to avoid circular import and undefined value errors
+        self.delay = 0.1
+        # the default is 1 food at a time
+        self.multi = False
 
     def create_snake(self):
         for pos in STARTING_POSITIONS:
@@ -21,8 +28,6 @@ class Snake:
         new.color("white")
         new.setx(position[0])
         new.sety(position[1])
-        # trying to define speed here already, perhaps that helps
-        new.speed("slowest")
         self.segments.append(new)
         self.head = self.segments[0]
 
@@ -34,14 +39,39 @@ class Snake:
 
     def grow(self):
         self.add_segment(self.segments[-1].position())
+    
 
 # different kinds of food shouldn't just look different, but also trigger events
     def handle_fud(self, fud):
-        # I think manipulating MOVE_DISTANCE might be the way forward
-        global MOVE_DISTANCE
+        # from main import screen
+        # the arrow food speeds up the game by reducing the delay
         if fud.shape() == "arrow":
-            # if this is higher than 20, the snake develops gaps
-            MOVE_DISTANCE = 20
+            # reset the screen background
+            # screen.bgcolor("black")
+            # reset the food generation scheme
+            self.multi = False
+            if self.delay > 0.02:
+                self.delay -= 0.02
+        # the square food blinks the screen randomly
+        if fud.shape() == "square":
+            # reset the delay
+            self.delay = 0.1
+            # reset the food generation scheme
+            self.multi = False
+            """ def screen_to_white():
+                screen.bgcolor("white")
+            def screen_to_black():
+                screen.bgcolor("black")
+            for i in range(len(self.segments)):
+                ontimer(screen_to_white, 10)
+                ontimer(screen_to_black, 10) """
+        # the circle food generates a lot of food
+        if fud.shape() == "circle":
+             # reset the delay
+            self.delay = 0.1
+            # reset the screen background
+            # screen.bgcolor("black")
+            self.multi = True
 
 
     def report(self):
